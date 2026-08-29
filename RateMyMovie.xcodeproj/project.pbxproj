@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		A3AA8E6E303E976400F98957 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A3AA8E6D303E976400F98957 /* Config.xcconfig */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		A3AA8E43303E71B200F98957 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,11 +31,25 @@
 		A3AA8E35303E71B000F98957 /* RateMyMovie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RateMyMovie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3AA8E42303E71B200F98957 /* RateMyMovieTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RateMyMovieTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3AA8E4C303E71B200F98957 /* RateMyMovieUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RateMyMovieUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A3AA8E6D303E976400F98957 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A3AA8E70303E981B00F98957 /* Exceptions for "RateMyMovie" folder in "RateMyMovie" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A3AA8E34303E71B000F98957 /* RateMyMovie */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A3AA8E37303E71B000F98957 /* RateMyMovie */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A3AA8E70303E981B00F98957 /* Exceptions for "RateMyMovie" folder in "RateMyMovie" target */,
+			);
 			path = RateMyMovie;
 			sourceTree = "<group>";
 		};
@@ -79,6 +97,7 @@
 				A3AA8E45303E71B200F98957 /* RateMyMovieTests */,
 				A3AA8E4F303E71B200F98957 /* RateMyMovieUITests */,
 				A3AA8E36303E71B000F98957 /* Products */,
+				A3AA8E6D303E976400F98957 /* Config.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -212,6 +231,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A3AA8E6E303E976400F98957 /* Config.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -390,6 +410,7 @@
 		};
 		A3AA8E57303E71B200F98957 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A3AA8E6D303E976400F98957 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -397,6 +418,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RateMyMovie/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -421,6 +443,7 @@
 		};
 		A3AA8E58303E71B200F98957 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A3AA8E6D303E976400F98957 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -428,6 +451,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RateMyMovie/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
