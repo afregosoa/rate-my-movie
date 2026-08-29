@@ -14,12 +14,24 @@ final class HomeViewModel {
     private(set) var freeToWatchError: Error?
     private(set) var selectedFreeToWatchFilter: FreeToWatchFilter = .movies
 
+    // MARK: - What's Popular state
+    private(set) var whatsPopularItems: [MediaItem] = []
+    private(set) var isLoadingWhatsPopular = false
+    private(set) var whatsPopularError: Error?
+    private(set) var selectedWhatsPopularFilter: WhatsPopularFilter = .streaming
+
     private let fetchTrendingUseCase: FetchTrendingUseCase
     private let fetchFreeToWatchUseCase: FetchFreeToWatchUseCase
+    private let fetchWhatsPopularUseCase: FetchWhatsPopularUseCase
 
-    init(fetchTrendingUseCase: FetchTrendingUseCase, fetchFreeToWatchUseCase: FetchFreeToWatchUseCase) {
+    init(
+        fetchTrendingUseCase: FetchTrendingUseCase,
+        fetchFreeToWatchUseCase: FetchFreeToWatchUseCase,
+        fetchWhatsPopularUseCase: FetchWhatsPopularUseCase
+    ) {
         self.fetchTrendingUseCase = fetchTrendingUseCase
         self.fetchFreeToWatchUseCase = fetchFreeToWatchUseCase
+        self.fetchWhatsPopularUseCase = fetchWhatsPopularUseCase
     }
 
     // MARK: - Trending
@@ -80,5 +92,35 @@ final class HomeViewModel {
 
     func clearFreeToWatchError() {
         freeToWatchError = nil
+    }
+
+    // MARK: - What's Popular
+
+    /// Loads popular content for the currently selected filter.
+    /// Skips the fetch if data is already loaded — prevents duplicate requests on tab re-appearance.
+    func loadWhatsPopular() async {
+        guard whatsPopularItems.isEmpty else { return }
+        guard !isLoadingWhatsPopular else { return }
+        isLoadingWhatsPopular = true
+        defer { isLoadingWhatsPopular = false }
+
+        do {
+            whatsPopularItems = try await fetchWhatsPopularUseCase.execute(filter: selectedWhatsPopularFilter)
+            whatsPopularError = nil
+        } catch {
+            whatsPopularError = error
+        }
+    }
+
+    /// Switches the filter and reloads What's Popular content.
+    func selectWhatsPopularFilter(_ filter: WhatsPopularFilter) async {
+        guard filter != selectedWhatsPopularFilter else { return }
+        selectedWhatsPopularFilter = filter
+        whatsPopularItems = []
+        await loadWhatsPopular()
+    }
+
+    func clearWhatsPopularError() {
+        whatsPopularError = nil
     }
 }

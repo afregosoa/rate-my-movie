@@ -3,10 +3,6 @@ import SwiftUI
 struct HomeView: View {
     var viewModel: HomeViewModel
 
-    // MARK: - Filter states (placeholder sections — not yet wired to real data)
-
-    @State private var popularFilter = "Streaming"
-
     /// Search query — wired to the search bar, will drive SearchView later.
     @State private var searchQuery = ""
 
@@ -25,7 +21,8 @@ struct HomeView: View {
             .task {
                 async let trending: () = viewModel.loadTrending()
                 async let freeToWatch: () = viewModel.loadFreeToWatch()
-                _ = await (trending, freeToWatch)
+                async let whatsPopular: () = viewModel.loadWhatsPopular()
+                _ = await (trending, freeToWatch, whatsPopular)
             }
             .alert("Failed to load trending", isPresented: Binding(
                 get: { viewModel.trendingError != nil },
@@ -44,6 +41,15 @@ struct HomeView: View {
                 Button("Cancel", role: .cancel) {}
             } message: {
                 Text(viewModel.freeToWatchError?.localizedDescription ?? "")
+            }
+            .alert("Failed to load what's popular", isPresented: Binding(
+                get: { viewModel.whatsPopularError != nil },
+                set: { if !$0 { viewModel.clearWhatsPopularError() } }
+            )) {
+                Button("Retry") { Task { await viewModel.loadWhatsPopular() } }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text(viewModel.whatsPopularError?.localizedDescription ?? "")
             }
         }
     }
@@ -77,12 +83,41 @@ struct HomeView: View {
     }
 
     private var whatsPopularSection: some View {
-        HomeSectionView(
+        // Bridge WhatsPopularFilter enum to the String-based filter chip UI
+        let filterBinding = Binding<String>(
+            get: {
+                switch viewModel.selectedWhatsPopularFilter {
+                case .streaming: return "Streaming"
+                case .onTV: return "On TV"
+                case .forRent: return "For Rent"
+                case .inTheaters: return "In Theaters"
+                }
+            },
+            set: { newValue in
+                let filter: WhatsPopularFilter
+                switch newValue {
+                case "On TV": filter = .onTV
+                case "For Rent": filter = .forRent
+                case "In Theaters": filter = .inTheaters
+                default: filter = .streaming
+                }
+                Task { await viewModel.selectWhatsPopularFilter(filter) }
+            }
+        )
+
+        return HomeSectionView(
             title: "What's Popular",
-            filters: ["Movies", "TV"],
-            selectedFilter: $popularFilter
+            filters: ["Streaming", "On TV", "For Rent", "In Theaters"],
+            selectedFilter: filterBinding
         ) {
-            ForEach(0..<10, id: \.self) { _ in PlaceholderCard() }
+            if viewModel.isLoadingWhatsPopular {
+                // Show skeleton cards while the first fetch is in progress
+                ForEach(0..<10, id: \.self) { _ in PlaceholderCard() }
+            } else {
+                ForEach(viewModel.whatsPopularItems) { item in
+                    MediaCardView(item: item)
+                }
+            }
         }
     }
 

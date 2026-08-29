@@ -28,6 +28,23 @@ struct MainTabView: View {
                     client: NetworkClient()
                 )
             )
+        ),
+        fetchWhatsPopularUseCase: FetchWhatsPopularUseCase(
+            repository: WhatsPopularRepository(
+                service: TMDBService(
+                    client: NetworkClient()
+                )
+            )
+        )
+    )
+
+    @State private var tvShowsViewModel = TVShowsViewModel(
+        useCase: DiscoverTVShowsUseCase(
+            repository: TVShowsRepository(
+                service: TMDBService(
+                    client: NetworkClient()
+                )
+            )
         )
     )
 
@@ -39,7 +56,7 @@ struct MainTabView: View {
             DiscoverView(viewModel: discoverViewModel)
                 .tabItem { Label("Movies", systemImage: "film.fill") }
 
-            TVShowsView()
+            TVShowsView(viewModel: tvShowsViewModel)
                 .tabItem { Label("TV Shows", systemImage: "tv.fill") }
 
             PeopleView()

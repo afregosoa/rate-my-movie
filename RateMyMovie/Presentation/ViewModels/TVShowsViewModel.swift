@@ -1,14 +1,14 @@
 import Foundation
 
 @Observable
-final class DiscoverViewModel {
+final class TVShowsViewModel {
 
     // MARK: - Public state
 
-    /// Movies loaded so far across all fetched pages.
-    private(set) var movies: [Movie] = []
+    /// TV shows loaded so far across all fetched pages.
+    private(set) var shows: [MediaItem] = []
 
-    /// True only during the very first load (no movies on screen yet).
+    /// True only during the very first load (no shows on screen yet).
     private(set) var isLoading = false
 
     /// Holds the last network or decoding error, if any.
@@ -16,7 +16,7 @@ final class DiscoverViewModel {
 
     // MARK: - Private state
 
-    private let useCase: DiscoverMoviesUseCase
+    private let useCase: DiscoverTVShowsUseCase
     private var currentPage = 1
     private var totalPages = 1
 
@@ -25,7 +25,7 @@ final class DiscoverViewModel {
 
     // MARK: - Init
 
-    init(useCase: DiscoverMoviesUseCase) {
+    init(useCase: DiscoverTVShowsUseCase) {
         self.useCase = useCase
     }
 
@@ -35,19 +35,17 @@ final class DiscoverViewModel {
     func loadFirstPage() async {
         guard !isFetching else { return }
         currentPage = 1
-        movies = []
+        shows = []
         await fetchPage(currentPage)
     }
 
     /// Triggers the next page fetch when the user is near the end of the list.
-    /// - Parameter movie: The movie currently being rendered — used to detect proximity to the last item.
-    func loadNextPageIfNeeded(currentItem movie: Movie) async {
+    /// - Parameter show: The show currently being rendered — used to detect proximity to the last item.
+    func loadNextPageIfNeeded(currentItem show: MediaItem) async {
         // Fire when the user reaches the last 3 items and more pages exist
-        // Stop paginating if there's an active error — prevents race condition where
-        // multiple cards fire simultaneously and keep overwriting the error state
         guard error == nil,
-              let index = movies.firstIndex(where: { $0.id == movie.id }),
-              index >= movies.count - 3,
+              let index = shows.firstIndex(where: { $0.id == show.id }),
+              index >= shows.count - 3,
               currentPage < totalPages,
               !isFetching else { return }
         currentPage += 1
@@ -64,16 +62,16 @@ final class DiscoverViewModel {
     private func fetchPage(_ page: Int) async {
         isFetching = true
         // Show full-screen loader only on the first load; pagination is silent
-        isLoading = movies.isEmpty
+        isLoading = shows.isEmpty
         defer {
             isFetching = false
             isLoading = false
         }
         do {
             let result = try await useCase.execute(page: page)
-            // TMDB can return the same movie at page boundaries — filter duplicates before appending
-            let newMovies = result.items.filter { new in !movies.contains { $0.id == new.id } }
-            movies.append(contentsOf: newMovies)
+            // TMDB can return the same show at page boundaries — filter duplicates before appending
+            let newShows = result.items.filter { new in !shows.contains { $0.id == new.id } }
+            shows.append(contentsOf: newShows)
             totalPages = result.totalPages
         } catch {
             self.error = error

@@ -7,10 +7,10 @@ final class MovieRepository: MovieRepositoryProtocol {
         self.service = service
     }
 
-    func discoverMovies(page: Int) async throws -> DiscoverPage {
+    func discoverMovies(page: Int) async throws -> MediaPage<Movie> {
         let response = try await service.discoverMovies(page: page)
-        return DiscoverPage(
-            movies: response.results.map(\.movie),
+        return MediaPage(
+            items: response.results.map(\.movie),
             totalPages: response.totalPages
         )
     }

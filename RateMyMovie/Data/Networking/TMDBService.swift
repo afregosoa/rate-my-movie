@@ -11,6 +11,10 @@ final class TMDBService: TMDBServiceProtocol {
         try await client.request(TMDBEndpoint.discoverMovies(page: page))
     }
 
+    func discoverTVShows(page: Int) async throws -> TVShowResponseDTO {
+        try await client.request(TMDBEndpoint.discoverTV(page: page))
+    }
+
     func fetchTrending(timeWindow: TimeWindow) async throws -> TrendingResponseDTO {
         try await client.request(TMDBEndpoint.trending(timeWindow: timeWindow))
     }
@@ -21,5 +25,21 @@ final class TMDBService: TMDBServiceProtocol {
 
     func fetchFreeToWatchTV() async throws -> TVShowResponseDTO {
         try await client.request(TMDBEndpoint.freeToWatchTV)
+    }
+
+    func fetchPopularStreaming() async throws -> DiscoverResponseDTO {
+        try await client.request(TMDBEndpoint.popularStreaming)
+    }
+
+    func fetchPopularOnTV() async throws -> TVShowResponseDTO {
+        try await client.request(TMDBEndpoint.popularOnTV)
+    }
+
+    func fetchPopularForRent() async throws -> DiscoverResponseDTO {
+        try await client.request(TMDBEndpoint.popularForRent)
+    }
+
+    func fetchPopularInTheaters() async throws -> DiscoverResponseDTO {
+        try await client.request(TMDBEndpoint.popularInTheaters)
     }
 }
