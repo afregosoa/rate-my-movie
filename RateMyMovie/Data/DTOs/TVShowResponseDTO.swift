@@ -1,8 +1,8 @@
 import Foundation
 
-struct DiscoverResponseDTO: Decodable {
+struct TVShowResponseDTO: Decodable {
     let page: Int
-    let results: [MovieDTO]
+    let results: [TVShowDTO]
     let totalPages: Int
     let totalResults: Int
 
@@ -12,4 +12,3 @@ struct DiscoverResponseDTO: Decodable {
         case totalResults = "total_results"
     }
 }
-//Possible to have a generic ResponseDTO. We need to verify is possible

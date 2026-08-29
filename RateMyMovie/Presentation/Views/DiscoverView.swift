@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct DiscoverView: View {
-    @State var viewModel: DiscoverViewModel
+    var viewModel: DiscoverViewModel
 
     /// Two equal-width columns for the poster grid.
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
