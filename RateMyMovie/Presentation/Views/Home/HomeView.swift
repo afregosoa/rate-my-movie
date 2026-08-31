@@ -3,9 +3,6 @@ import SwiftUI
 struct HomeView: View {
     var viewModel: HomeViewModel
 
-    /// Search query — wired to the search bar, will drive SearchView later.
-    @State private var searchQuery = ""
-
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -17,7 +14,6 @@ struct HomeView: View {
                 .padding(.vertical)
             }
             .navigationTitle("Home")
-            .searchable(text: $searchQuery, prompt: "Search movies, TV shows, people…")
             .task {
                 async let trending: () = viewModel.loadTrending()
                 async let freeToWatch: () = viewModel.loadFreeToWatch()

@@ -10,6 +10,7 @@ enum TMDBEndpoint: Endpoint {
     case popularOnTV
     case popularForRent
     case popularInTheaters
+    case search(query: String, page: Int)
 
     var path: String {
         switch self {
@@ -26,6 +27,8 @@ enum TMDBEndpoint: Endpoint {
             return "/discover/tv"
         case .popularInTheaters:
             return "/movie/now_playing"
+        case .search:
+            return "/search/multi"
         }
     }
 
@@ -62,6 +65,11 @@ enum TMDBEndpoint: Endpoint {
             ]
         case .popularInTheaters:
             return []
+        case .search(let query, let page):
+            return [
+                URLQueryItem(name: "query", value: query),
+                URLQueryItem(name: "page", value: "\(page)")
+            ]
         }
     }
 

@@ -48,6 +48,16 @@ struct MainTabView: View {
         )
     )
 
+    @State private var searchViewModel = SearchViewModel(
+        useCase: SearchUseCase(
+            repository: SearchRepository(
+                service: TMDBService(
+                    client: NetworkClient()
+                )
+            )
+        )
+    )
+
     var body: some View {
         TabView {
             HomeView(viewModel: homeViewModel)
@@ -59,8 +69,8 @@ struct MainTabView: View {
             TVShowsView(viewModel: tvShowsViewModel)
                 .tabItem { Label("TV Shows", systemImage: "tv.fill") }
 
-            PeopleView()
-                .tabItem { Label("People", systemImage: "person.2.fill") }
+            SearchView(viewModel: searchViewModel)
+                .tabItem { Label("Search", systemImage: "magnifyingglass") }
 
             SettingsView()
                 .tabItem { Label("Settings", systemImage: "gearshape.fill") }

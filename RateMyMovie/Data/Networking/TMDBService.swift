@@ -42,4 +42,8 @@ final class TMDBService: TMDBServiceProtocol {
     func fetchPopularInTheaters() async throws -> DiscoverResponseDTO {
         try await client.request(TMDBEndpoint.popularInTheaters)
     }
+
+    func search(query: String, page: Int) async throws -> TrendingResponseDTO {
+        try await client.request(TMDBEndpoint.search(query: query, page: page))
+    }
 }
