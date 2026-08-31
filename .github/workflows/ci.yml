@@ -26,12 +26,10 @@ jobs:
 
       - name: Build & Test
         run: |
-          UDID=$(xcrun simctl list devices available --json \
-            | jq -r '[.devices | to_entries[] | select(.key | contains("iOS")) | .value[] | select(.name | startswith("iPhone"))] | first | .udid')
           xcodebuild test \
             -project RateMyMovie.xcodeproj \
             -scheme RateMyMovie \
-            -destination "platform=iOS Simulator,id=$UDID" \
+            -destination 'platform=iOS Simulator,name=iPhone 17' \
             -resultBundlePath TestResults \
             CODE_SIGNING_ALLOWED=NO \
             | xcpretty && exit ${PIPESTATUS[0]}
