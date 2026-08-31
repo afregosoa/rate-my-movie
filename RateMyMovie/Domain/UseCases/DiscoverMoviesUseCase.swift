@@ -5,7 +5,7 @@ final class DiscoverMoviesUseCase {
         self.repository = repository
     }
 
-    func execute(page: Int) async throws -> DiscoverPage {
+    func execute(page: Int) async throws -> MediaPage<Movie> {
         try await repository.discoverMovies(page: page)
     }
 }
