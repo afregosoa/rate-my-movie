@@ -10,4 +10,5 @@ protocol TMDBServiceProtocol {
     func fetchPopularOnTV() async throws -> TVShowResponseDTO
     func fetchPopularForRent() async throws -> DiscoverResponseDTO
     func fetchPopularInTheaters() async throws -> DiscoverResponseDTO
+    func search(query: String, page: Int) async throws -> TrendingResponseDTO
 }
